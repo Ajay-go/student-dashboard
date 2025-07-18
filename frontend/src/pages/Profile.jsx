@@ -9,6 +9,7 @@ const Profile = () => {
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
+    const BACKEND_URL = import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         if (!token) {
@@ -16,7 +17,7 @@ const Profile = () => {
             return;
         }
 
-        axios.get('http://localhost:4000/api/auth/profile', {
+        axios.get(`${BACKEND_URL}/api/auth/profile`, {   // changed from post to get for fetching profile
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(res => {
@@ -27,11 +28,11 @@ const Profile = () => {
             .catch(() => {
                 navigate('/login');
             });
-    }, [token, navigate]);
+    }, [token, navigate, BACKEND_URL]);
 
     const updateProfile = async () => {
         try {
-            const res = await axios.put('http://localhost:4000/api/auth/profile', { name, email }, {
+            const res = await axios.put(`${BACKEND_URL}/api/auth/profile`, { name, email }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setStudent(res.data);

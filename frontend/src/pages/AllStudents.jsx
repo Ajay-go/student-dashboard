@@ -3,28 +3,40 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './allstudents.css';
 
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
 function AllStudents() {
     const navigate = useNavigate();
     const [students, setStudents] = useState([]);
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get('http://localhost:4000/api/auth/students')
+        axios.get(`${BACKEND_URL}/api/auth/students`)
             .then(response => {
                 setStudents(response.data);
+                setError('');
             })
             .catch(err => {
                 console.error(err);
                 setError('Failed to load students.');
-            });
+            })
+            .finally(() => setLoading(false));
     }, []);
 
     return (
         <div className="students-container">
             <h2>All Students</h2>
-            {error ? (
-                <div className="error">{error}</div>
-            ) : (
+
+            {loading && <p>Loading students...</p>}
+
+            {error && <div className="error">{error}</div>}
+
+            {!loading && !error && students.length === 0 && (
+                <p>No students found.</p>
+            )}
+
+            {!loading && !error && students.length > 0 && (
                 <div className="student-list">
                     {students.map(student => (
                         <div key={student._id} className="student-card">
@@ -35,7 +47,8 @@ function AllStudents() {
                     ))}
                 </div>
             )}
-            <button onClick={() => navigate('/')}>Back</button>
+
+            <button className="back-button" onClick={() => navigate('/')}>Back</button>
         </div>
     );
 }

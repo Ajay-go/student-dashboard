@@ -9,11 +9,14 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    // Use environment variable or fallback to localhost for dev
+    const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
             const res = await axios.post(
-                'http://localhost:4000/api/auth/login',
+                `${BACKEND_URL}/api/auth/login`,
                 { email, password },
                 { withCredentials: true }
             );

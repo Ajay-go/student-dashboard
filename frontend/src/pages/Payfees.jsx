@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import './profile.css'; 
+import './profile.css';
 
 function Payfees() {
     const navigate = useNavigate();
@@ -9,7 +9,10 @@ function Payfees() {
     const [error, setError] = useState('');
     const token = localStorage.getItem('token');
 
+    const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
     const handlePayment = async () => {
+        if (loading) return;
         setLoading(true);
         setError('');
         try {
@@ -19,7 +22,7 @@ function Payfees() {
                 return;
             }
 
-            await axios.post('http://localhost:4000/api/auth/pay', {}, {
+            await axios.post(`${BACKEND_URL}/api/auth/pay`, {}, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -41,6 +44,9 @@ function Payfees() {
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <button onClick={handlePayment} disabled={loading}>
                     {loading ? "Processing..." : "Pay Now"}
+                </button>
+                <button onClick={() => navigate('/profile')} disabled={loading} style={{ marginLeft: '10px' }}>
+                    Cancel
                 </button>
             </div>
         </div>

@@ -1,35 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './home.css';
+import axios from 'axios';
+import './allstudents.css';
 
-const Home = () => {
+// Use env variable or fallback localhost URL
+const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
+function AllStudents() {
     const navigate = useNavigate();
-    const token = localStorage.getItem('token');
+    const [students, setStudents] = useState([]);
+    const [error, setError] = useState('');
+
+    useEffect(() => {
+        axios.get(`${BACKEND_URL}/api/auth/students`)
+            .then(response => {
+                setStudents(response.data);
+            })
+            .catch(err => {
+                console.error(err);
+                setError('Failed to load students.');
+            });
+    }, []);
 
     return (
-        <div className="home-container">
-            <nav className="navbar">
-                <button onClick={() => navigate('/allstudents')}>
-                    All Students
-                </button>
-
-                {token ? (
-                    <button onClick={() => navigate('/profile')}>
-                        Profile
-                    </button>
-                ) : (
-                    <button onClick={() => navigate('/login')}>
-                        Login
-                    </button>
-                )}
-            </nav>
-
-            <div className="home-content">
-                <h1>Welcome to the Student Fee Management System</h1>
-                <p>{token ? "You're logged in." : "Please login to access your profile."}</p>
-            </div>
+        <div className="students-container">
+            <h2>All Students</h2>
+            {error ? (
+                <div className="error">{error}</div>
+            ) : (
+                <div className="student-list">
+                    {students.map(student => (
+                        <div key={student._id} className="student-card">
+                            <p><strong>Name:</strong> {student.name}</p>
+                            <p><strong>Email:</strong> {student.email}</p>
+                            <p><strong>Fees Paid:</strong> {student.feesPaid ? 'Yes' : 'No'}</p>
+                        </div>
+                    ))}
+                </div>
+            )}
+            <button onClick={() => navigate('/')}>Back</button>
         </div>
     );
-};
+}
 
-export default Home;
+export default AllStudents;
