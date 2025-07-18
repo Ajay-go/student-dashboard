@@ -8,12 +8,21 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Allow all origins, but do NOT allow credentials (cookies, auth headers)
-app.use(cors({
-    origin: '*',          // Allow requests from any origin
-    credentials: false,   // Cannot use true with origin '*'
-}));
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://student-dashboard-wine-nine.vercel.app'
+];
 
+app.use(cors({
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
+}));
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 
