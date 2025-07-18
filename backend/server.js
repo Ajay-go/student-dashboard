@@ -1,23 +1,29 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const mongoose = require('mongoose');
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
+const PORT = process.env.PORT || 4000;
 
-app.use(cors());
+// Enable CORS for all origins
+app.use(cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+}));
+
 app.use(express.json());
+app.use('/api/auth', authRoutes);
 
-// Routes
-app.use('/api', authRoutes);
-
-// Start server
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
     .then(() => {
-        app.listen(5000, () => {
-            console.log('Server running on http://localhost:5000');
-        });
+        console.log('Connected to MongoDB');
+        console.log('Connected to DB:', mongoose.connection.name);
+        app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error('MongoDB connection error:', err));
