@@ -9,8 +9,8 @@ const Login = () => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    // Use environment variable or fallback to localhost for dev
-    const BACKEND_URL = import.meta.env.VITE_API_URL;
+    // ✅ Hardcoded backend URL
+    const BACKEND_URL = 'https://student-production-13b0.up.railway.app';
 
     const handleLogin = async (e) => {
         e.preventDefault();

@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './allstudents.css';
 
-const BACKEND_URL = import.meta.env.VITE_API_URL;
+// Hardcoded backend API URL (replace with your actual backend URL)
+const BACKEND_URL = 'https://student-production-13b0.up.railway.app';
 
 function AllStudents() {
     const navigate = useNavigate();

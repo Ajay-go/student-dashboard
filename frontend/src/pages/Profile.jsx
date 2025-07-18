@@ -9,7 +9,9 @@ const Profile = () => {
     const [email, setEmail] = useState('');
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
-    const BACKEND_URL = import.meta.env.VITE_API_URL;
+
+    // ✅ Hardcoded backend URL
+    const BACKEND_URL = 'https://student-production-13b0.up.railway.app';
 
     useEffect(() => {
         if (!token) {
@@ -17,7 +19,7 @@ const Profile = () => {
             return;
         }
 
-        axios.get(`${BACKEND_URL}/api/auth/profile`, {  
+        axios.get(`${BACKEND_URL}/api/auth/profile`, {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(res => {
@@ -28,7 +30,7 @@ const Profile = () => {
             .catch(() => {
                 navigate('/login');
             });
-    }, [token, navigate, BACKEND_URL]);
+    }, [token, navigate]);
 
     const updateProfile = async () => {
         try {

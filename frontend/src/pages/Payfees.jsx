@@ -9,7 +9,8 @@ function Payfees() {
     const [error, setError] = useState('');
     const token = localStorage.getItem('token');
 
-    const BACKEND_URL = import.meta.env.VITE_API_URL ;
+    // ✅ Hardcoded backend URL
+    const BACKEND_URL = 'https://student-production-13b0.up.railway.app';
 
     const handlePayment = async () => {
         if (loading) return;
