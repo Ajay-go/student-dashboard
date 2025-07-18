@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 4000;
 
 // Enable CORS for all origins
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'https://student-dashboard-indol.vercel.app/',
     credentials: true,
 }));
 
