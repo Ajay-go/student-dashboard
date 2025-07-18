@@ -6,13 +6,9 @@ require('dotenv').config();
 const authRoutes = require('./routes/authRoutes');
 
 const app = express();
-const PORT = process.env.PORT || 8080; // ✅ Railway uses 8080
+app.use(cors());
+const PORT = process.env.PORT || 8080;
 
-// ✅ Allow both localhost and your deployed frontend
-const allowedOrigins = [
-    'http://localhost:5173',
-    'https://student-dashboard-wine-nine.vercel.app'
-];
 
 app.use(cors({
     origin: function (origin, callback) {
