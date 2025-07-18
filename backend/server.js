@@ -8,15 +8,27 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// Enable CORS for all origins
+// ✅ CORS configuration
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://student-dashboard-indol.vercel.app'
+];
+
 app.use(cors({
-    origin: 'https://student-dashboard-indol.vercel.app/',
-    credentials: true,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    credentials: true
 }));
 
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 
+// ✅ Connect to MongoDB and start server
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
