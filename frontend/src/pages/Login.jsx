@@ -10,7 +10,7 @@ const Login = () => {
     const navigate = useNavigate();
 
     // Use environment variable or fallback to localhost for dev
-    const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    const BACKEND_URL = import.meta.env.VITE_API_URL;
 
     const handleLogin = async (e) => {
         e.preventDefault();

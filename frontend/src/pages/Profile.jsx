@@ -17,7 +17,7 @@ const Profile = () => {
             return;
         }
 
-        axios.get(`${BACKEND_URL}/api/auth/profile`, {   // changed from post to get for fetching profile
+        axios.get(`${BACKEND_URL}/api/auth/profile`, {  
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(res => {

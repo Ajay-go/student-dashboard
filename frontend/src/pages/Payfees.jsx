@@ -9,7 +9,7 @@ function Payfees() {
     const [error, setError] = useState('');
     const token = localStorage.getItem('token');
 
-    const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+    const BACKEND_URL = import.meta.env.VITE_API_URL ;
 
     const handlePayment = async () => {
         if (loading) return;

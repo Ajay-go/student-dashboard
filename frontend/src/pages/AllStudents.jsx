@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './allstudents.css';
 
-const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const BACKEND_URL = import.meta.env.VITE_API_URL;
 
 function AllStudents() {
     const navigate = useNavigate();
