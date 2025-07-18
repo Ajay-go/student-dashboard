@@ -8,11 +8,11 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 const PORT = process.env.PORT || 4000;
 
-// ✅ CORS configuration
-const allowedOrigins = [
-    'http://localhost:5173',
-    'https://student-dashboard-indol.vercel.app'
-];
+app.use(cors({
+    origin: '*',
+    credentials: true,
+}));
+
 
 app.use(cors({
     origin: function (origin, callback) {

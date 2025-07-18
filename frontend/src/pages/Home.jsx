@@ -1,46 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './allstudents.css';
+import './home.css';
 
-// Use env variable or fallback localhost URL
-const BACKEND_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
-
-function AllStudents() {
+const Home = () => {
     const navigate = useNavigate();
-    const [students, setStudents] = useState([]);
-    const [error, setError] = useState('');
-
-    useEffect(() => {
-        axios.get(`${BACKEND_URL}/api/auth/students`)
-            .then(response => {
-                setStudents(response.data);
-            })
-            .catch(err => {
-                console.error(err);
-                setError('Failed to load students.');
-            });
-    }, []);
+    const token = localStorage.getItem('token');
 
     return (
-        <div className="students-container">
-            <h2>All Students</h2>
-            {error ? (
-                <div className="error">{error}</div>
-            ) : (
-                <div className="student-list">
-                    {students.map(student => (
-                        <div key={student._id} className="student-card">
-                            <p><strong>Name:</strong> {student.name}</p>
-                            <p><strong>Email:</strong> {student.email}</p>
-                            <p><strong>Fees Paid:</strong> {student.feesPaid ? 'Yes' : 'No'}</p>
-                        </div>
-                    ))}
-                </div>
-            )}
-            <button onClick={() => navigate('/')}>Back</button>
+        <div className="home-container">
+            <nav className="navbar">
+                <button onClick={() => navigate('/allstudents')}>
+                    All Students
+                </button>
+
+                {token ? (
+                    <button onClick={() => navigate('/profile')}>
+                        Profile
+                    </button>
+                ) : (
+                    <button onClick={() => navigate('/login')}>
+                        Login
+                    </button>
+                )}
+            </nav>
+
+            <div className="home-content">
+                <h1>Welcome to the Student Fee Management System</h1>
+                <p>{token ? "You're logged in." : "Please login to access your profile."}</p>
+            </div>
         </div>
     );
-}
+};
 
-export default AllStudents;
+export default Home;
