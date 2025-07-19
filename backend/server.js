@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors'); // Import the cors package
 require('dotenv').config();
 
 const authRoutes = require('./routes/authRoutes');
@@ -7,13 +8,33 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Custom CORS middleware
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://student-dashboard-wine-nine.vercel.app');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://student-dashboard-wine-nine.vercel.app'
+];
+
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin) return callback(null, true);
+
+        // If the origin is in our allowed list, allow it.
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            // Otherwise, block it.
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Authorization',
+    credentials: true
+};
+
+// Use the cors middleware with your options
+app.use(cors(corsOptions));
+
+
+
 
 // Body parser middleware
 app.use(express.json());
