@@ -8,32 +8,18 @@ const authRoutes = require('./routes/authRoutes');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+// --- CORS Configuration ---
+// List of allowed origins (your frontend URLs)
 const allowedOrigins = [
-    'http://localhost:5173',
-    'https://student-dashboard-wine-nine.vercel.app'
+    'http://localhost:5173', // Your local frontend for development
+    'https://student-dashboard-wine-nine.vercel.app' // Your deployed Vercel frontend
 ];
 
-const corsOptions = {
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
+// The cors package can take the array of allowed origins directly.
+// This is the most standard and reliable way to configure it.
+app.use(cors({ origin: allowedOrigins }));
 
-        // If the origin is in our allowed list, allow it.
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            // Otherwise, block it.
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
-    methods: 'GET,POST,PUT,DELETE,OPTIONS',
-    allowedHeaders: 'Content-Type,Authorization',
-    credentials: true
-};
-
-// Use the cors middleware with your options
-app.use(cors(corsOptions));
-
-
+// --- End of CORS Configuration ---
 
 
 // Body parser middleware
